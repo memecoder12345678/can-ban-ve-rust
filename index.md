@@ -279,7 +279,6 @@ fn main() {
 
     - Hash map:
         - Hash map là một kiểu dữ liệu cho phép lưu trữ các cặp key-value
-      
         ```rust
         fn main() {
             let mu = String::from("MU");
