@@ -170,7 +170,7 @@ fn main() {
 fn main() {
     let x = [1, 2, 3]; // x là một array có 3 phần
     for i in x.iter() {
-        println!("{}", i);
+            println!("{}", i);
     } // in ra từng phần của array
 }
 ```
