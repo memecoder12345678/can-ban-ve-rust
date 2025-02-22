@@ -1,5 +1,3 @@
-# Căn bản về rust 🦀
-
 ## Biến:
 - Biến trong rust là bất biến (mặc định)
 ```rust
