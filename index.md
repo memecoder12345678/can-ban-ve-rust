@@ -35,27 +35,30 @@ fn main() {
 ## Kiểu dữ liệu:
 - ### Kiểu dữ liệu đơn giản:
     - Integer:
-        |  Độ dài  | Có dấu  |  Không dấu  |
-        |  ------- |  -----  |  ---------  |
-        |  8-bit   |  i8     |  u8         |
-        |  16-bit  |  i16    |  u16        |
-        |  32-bit  |  i32    |  u32        |
-        |  64-bit  |  i64    |  u64        |
-        |  128-bit |  i128   |  u128       |
-        |  arch    |  isize  |  usize      |
+      
+        | Độ dài  | Có dấu (`i`) | Không dấu (`u`) |
+        |---------|-------------|-----------------|
+        | 8-bit   | `i8`       | `u8`            |
+        | 16-bit  | `i16`      | `u16`           |
+        | 32-bit  | `i32`      | `u32`           |
+        | 64-bit  | `i64`      | `u64`           |
+        | 128-bit | `i128`     | `u128`          |
+        | Kiến trúc | `isize`  | `usize`         |
 
     - Float:
-        |  Độ dài  |  Kiểu dữ liệu  |
-        |  ------- |  ------------  |
-        |  32-bit  |  f32           |
-        |  64-bit  |  f64           |
+      
+        | Độ dài  | Kiểu dữ liệu |
+        |---------|-------------|
+        | 32-bit  | `f32`       |
+        | 64-bit  | `f64`       |
 
     - Boolean:
-        |  Điều kiện  |  Giá trị  |
-        |  ---------  |  ------   |
-        |  true       |  đúng     |
-        |  false      |  sai      |
-        |  None       |  rỗng     |
+      
+        | Điều kiện | Giá trị |
+        |----------|--------|
+        | `true`   | đúng   |
+        | `false`  | sai    |
+        | `None`   | rỗng   |
 
     - Character:
         - Character cũng có thể là unicode
