@@ -33,7 +33,7 @@ fn main() {
 
 
 ## Kiểu dữ liệu:
-- ### Kiểu dữ liệu đơn giản:
+- ### Kiểu dữ liệu cơ bản:
     - Integer:
       
         | Độ dài  | Có dấu (`i`) | Không dấu (`u`) |
@@ -261,7 +261,7 @@ fn main() {
             println!("{}", s2);
             println!("{}", s3);
             // s4 = s2 + " world";
-            // println!("{}", s2); <--- lỗi ở đây: giá trị của 2 đã bị chuyển giao quyền sở hữu
+            // println!("{}", s2); <--- lỗi ở đây: giá trị của s2 đã bị chuyển giao quyền sở hữu
             let mut s4: String = String::new();
             s4 = s1.clone() + " world"; // cách fix
             println!("{}", s4);
