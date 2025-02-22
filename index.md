@@ -31,6 +31,85 @@ fn main() {
 }
 ```
 
+## Mô hình ownership:
+- Mỗi giá trị trong Rust chỉ có một biến được gọi là chủ sở hữu
+- Chỉ có một chủ sở hữu tại một thời điểm
+- Khi chủ sở hữu ra khỏi phạm vi hoạt động, giá trị sẽ bị xóa
+```rust
+fn main() {
+    let x = String::from("hello"); // x là chủ sở hữu của giá trị "hello"
+    // let y = x; x chuyển giao chủ sở hữu cho y và bị xoá
+    // println!("{}", x); <--- lỗi ở đây: giá trị của x đã bị xoá, không thể in
+    let y = x.clone(); // cách fix: tạo một bản sao của x và gán cho y
+    println!("{}", y); // không bị lỗi
+    println!("{}", x); // in được
+
+    let s = String::from("hello"); // s là chủ sở hữu của chuỗi "hello"
+    fn takes_ownership(some_str: String) {
+        println!("{}", some_str);
+    }
+    takes_ownership(s); // s chuyển giao chủ sở hữu cho takes_ownership và bị xoá giá trị
+    fn gives_ownership() -> String {
+        let some_str = String::from("hello");
+        some_str // trả về giá trị và chuyển giao chủ sở hữu cho người gọi
+    }
+    fn takes_and_gives_back(some_str: String) -> String {
+        some_str
+    }
+    let s1 = gives_ownership(); // s là chủ sở hữu của giá trị "hello"
+    let s2 = String::from("hello");
+    let s3 = takes_and_gives_back(s2); // lấy quyền sở hữu của s2 và trả cho s3
+    println!("{}, {}", s1, s3);
+
+    fn calculate_length(some_str: String) -> (String, usize) {
+        let length = some_str.len(); // tính độ dài chuỗi
+        (some_str, length) // trả về giá trị và chuyển giao quyền sở hữu
+    }
+    let s1 = String::from("hello");
+    let (s2, len) = calculate_length(s1); // s2 và len là chủ sở hữu của giá trị
+    println!("Độ dài {} là {}", s2, len);
+}
+```
+
+## References:
+- Chỉ có thể tham chiếu cho phép sửa đổi cho một dữ liệu trong một phạm vi cụ thể
+- Không thể có một tham chiếu cho phép sửa đổi nếu một tham chiếu bất biến đã tồn tại trong phạm vi
+```rust
+fn main() {
+    fn calculate_length(some_str: &mut String) -> usize { // tham chiếu và cho phép sửa đổi
+        some_str.push_str(" world!");
+        let length = some_str.len(); // tính độ dài chuỗi
+        length // trả về giá trị và chuyển giao quyền sở hữu
+    }
+    let s1 = String::from("hello");
+    let len = calculate_length(&mut s1); // tham chiếu và cho phép sửa đổi đến s1
+    println!("Độ dài {} là {}", s1, len);
+}
+```
+
+## Stack và heap:
+- ### Stack:
+    - Stack là một bộ nhớ có kích thước cố định và ko thể thay đổi dung lượng
+
+- ### Heap:
+    - Heap là một bộ nhớ có kích thước không cố định và có thể thay đổi dung lượng trong quá trình chạy
+```rust
+fn main() {
+    fn x() {
+        // let a = "hello"; a được lưu trữ trên stack
+        // a.push_str("!"); <--- lỗi ở đây: không thể thêm vào char trên stack
+        let a = "hello".to_string(); // cách fix 
+        let b = 100;
+        y();
+        println!("{}, {}", a, b);
+    }
+    fn y() {
+        let mut a = String::from("World"); // a được lưu trữ trên heap
+        a.push_str("!");
+    }
+    x();
+}
+```
 
 ## Kiểu dữ liệu:
 - ### Kiểu dữ liệu cơ bản:
@@ -43,7 +122,7 @@ fn main() {
         | 32-bit  | `i32`      | `u32`           |
         | 64-bit  | `i64`      | `u64`           |
         | 128-bit | `i128`     | `u128`          |
-        | Kiến trúc | `isize`  | `usize`         |
+        | arch | `isize`  | `usize`         |
 
     - Float:
       
@@ -70,6 +149,7 @@ fn main() {
             println!("{}", y); // y là '💀'
         }
         ```
+
 - ### kiểu dữ liệu phức tạp:
     - Tuple:
         - Tuple là một tập hợp các phần tử có nhiều kiểu dữ liệu khác nhau
@@ -180,7 +260,7 @@ fn main() {
                 address: String,
             }
             impl ip_address {
-                fn some_fn() {
+                fn some_fn(){
                     println!("Hello, world!");
                 }
             }
@@ -248,7 +328,6 @@ fn main() {
         }
         ```
 
-
     - String:
         - String là một kiểu dữ liệu cho phép lưu trữ chuỗi ký tự
         ```rust
@@ -295,108 +374,6 @@ fn main() {
             println!("{:?}", score);
         }
         ```
-
-## Stack và heap:
-- ### Stack:
-    - Stack là một bộ nhớ có kích thước cố định và ko thể thay đổi dung lượng
-
-- ### Heap:
-    - Heap là một bộ nhớ có kích thước không cố định và có thể thay đổi dung lượng trong quá trình chạy
-```rust
-fn main() {
-    fn x() {
-        // let a = "hello"; a được lưu trữ trên stack
-        // a.push_str("!"); <--- lỗi ở đây: không thể thêm vào char trên stack
-        let a = "hello".to_string(); // cách fix 
-        let b = 100;
-        y();
-        println!("{}, {}", a, b);
-    }
-    fn y() {
-        let mut a = String::from("World"); // a được lưu trữ trên heap
-        a.push_str("!");
-    }
-    x();
-}
-```
-
-## Mô hình ownership:
-- Mỗi giá trị trong Rust chỉ có một biến được gọi là chủ sở hữu
-- Chỉ có một chủ sở hữu tại một thời điểm
-- Khi chủ sở hữu ra khỏi phạm vi hoạt động, giá trị sẽ bị xóa
-```rust
-fn main() {
-    let x = String::from("hello"); // x là chủ sở hữu của giá trị "hello"
-    // let y = x; x chuyển giao chủ sở hữu cho y và bị xoá
-    // println!("{}", x); <--- lỗi ở đây: giá trị của x đã bị xoá, không thể in
-    let y = x.clone(); // cách fix: tạo một bản sao của x và gán cho y
-    println!("{}", y); // không bị lỗi
-    println!("{}", x); // in được
-
-    let s = String::from("hello"); // s là chủ sở hữu của chuỗi "hello"
-    fn takes_ownership(some_str: String) {
-        println!("{}", some_str);
-    }
-    takes_ownership(s); // s chuyển giao chủ sở hữu cho takes_ownership và bị xoá giá trị
-    fn gives_ownership() -> String {
-        let some_str = String::from("hello");
-        some_str // trả về giá trị và chuyển giao chủ sở hữu cho người gọi
-    }
-    fn takes_and_gives_back(some_str: String) -> String {
-        some_str
-    }
-    let s1 = gives_ownership(); // s là chủ sở hữu của giá trị "hello"
-    let s2 = String::from("hello");
-    let s3 = takes_and_gives_back(s2); // lấy quyền sở hữu của s2 và trả cho s3
-    println!("{}, {}", s1, s3);
-
-    fn calculate_length(some_str: String) -> (String, usize) {
-        let length = some_str.len(); // tính độ dài chuỗi
-        (some_str, length) // trả về giá trị và chuyển giao quyền sở hữu
-    }
-    let s1 = String::from("hello");
-    let (s2, len) = calculate_length(s1); // s2 và len là chủ sở hữu của giá trị
-    println!("Độ dài {} là {}", s2, len);
-}
-```
-
-## References:
-- Chỉ có thể tham chiếu cho phép sửa đổi cho một dữ liệu trong một phạm vi cụ thể
-- Không thể có một tham chiếu cho phép sửa đổi nếu một tham chiếu bất biến đã tồn tại trong phạm vi
-```rust
-fn main() {
-    fn calculate_length(some_str: &mut String) -> usize { // tham chiếu và cho phép sửa đổi
-        some_str.push_str(" world!");
-        let length = some_str.len(); // tính độ dài chuỗi
-        length // trả về giá trị và chuyển giao quyền sở hữu
-    }
-    let s1 = String::from("hello");
-    let len = calculate_length(&mut s1); // tham chiếu và cho phép sửa đổi đến s1
-    println!("Độ dài {} là {}", s1, len);
-}
-```
-
-## Lifetime:
-- Lifetime đảm bảo rằng tham chiếu đến dữ liệu luôn hợp lệ trong suốt thời gian nó được sử dụng
-```rust
-fn main() {
-    let a = 5;
-    let b = 4;
-    let c = get_ref(&a, &b);
-    println!("{}", c);
-    // fn get_ref() -> &i32 {
-    //     let a = 5;
-    //     &a <--- lỗi ở đây: giá trị của a đã bị xóa khi ra ngoài hàm
-    // }
-    fn get_ref<'a>(param1: &'a i32, param2: &'a i32) -> &'a i32 { // cách fix: dùng lifetime
-        if param1 > param2 {
-            param1
-        } else {
-            param2
-        }
-    }
-}
-```
 
 ## Match:
 - Match là một cách để kiểm tra giá trị của một biến và thực hiện một hành động dựa trên giá trị đó
@@ -457,6 +434,75 @@ fn main() {
         }
     }
 }
+```
+
+## Crates và Modules:
+- Crates là một tập hợp các module và các file có thể được sử dụng trong một dự án Rust
+```rust
+mod front_house {
+    pub mod hosting {
+        pub fn add_to_waitlist() {
+            println!("Adding to waitlist...");
+        }
+        pub fn seat_at_table() {
+            println!("Seating you at your table...");
+        }
+    }
+    pub mod serving {
+        pub fn take_order() {
+            println!("Taking your order...");
+        }
+        pub fn take_payment() {
+            println!("Processing payment...");
+        }
+    }
+}
+fn call_order() {
+    println!("Calling order...");
+}
+mod back_house {
+    pub struct Breakfast {
+        pub toast: String,
+        pub fruit: String,
+    }
+    impl Breakfast {
+        pub fn monday(toast: &str) -> Breakfast {
+            Breakfast {
+                toast: String::from(toast),
+                fruit: String::from("blueberries"),
+            }    
+        }
+    }
+    pub fn cook_order() {
+        println!("Cooking your order...");
+    }
+    pub fn fix_order() {
+        println!("Fixing your order...");
+        super::call_order();
+        cook_order();
+    }
+}
+fn eat_at_restanrant() {
+    crate::front_house::hosting::add_to_waitlist();
+    crate::front_house::hosting::seat_at_table();
+    let mut order = back_house::Breakfast::monday("fish");
+    call_order();
+    order.toast = String::from("chicken");
+    back_house::fix_order();
+    crate::front_house::serving::take_order();
+    crate::front_house::serving::take_payment();
+}
+```
+
+## Packages:
+- Trong file `Cargo.toml` thêm dưới dòng `[dependencies]`:
+```toml
+# trong ví dụ này ta dùng thư viện hex
+hex = "0.4.3"
+```
+- Trong file `main.rs` thêm
+```rust
+use hex
 ```
 
 ## Generic Types:
@@ -539,12 +585,12 @@ fn main() {
     }
     impl Transform for Data {
         fn revert(&self) -> String {
-            self.str1.chars().rev().collect::<String>();
+            self.str1.chars().rev().collect::<String>()
         }
     }
     impl Transform for Data2 {
         fn revert(&self) -> String {
-            (self.num1 + self.num2).to_string();
+            (self.num1 + self.num2).to_string()
         }
     }
     let a = Data::new(1, 2, "Hello".to_string());
@@ -559,75 +605,26 @@ fn main() {
 }
 ```
 
-## Crates và Modules:
-- Crates là một tập hợp các module và các file có thể được sử dụng trong một dự án Rust
+## Lifetime:
+- Lifetime đảm bảo rằng tham chiếu đến dữ liệu luôn hợp lệ trong suốt thời gian nó được sử dụng
 ```rust
-mod front_house {
-    pub mod hosting {
-        pub fn add_to_waitlist() {
-            println!("Adding to waitlist...");
-        }
-        pub fn seat_at_table() {
-            println!("Seating you at your table...");
-        }
-    }
-    pub mod serving {
-        pub fn take_order() {
-            println!("Taking your order...");
-        }
-        pub fn take_payment() {
-            println!("Processing payment...");
+fn main() {
+    let a = 5;
+    let b = 4;
+    let c = get_ref(&a, &b);
+    println!("{}", c);
+    // fn get_ref() -> &i32 {
+    //     let a = 5;
+    //     &a <--- lỗi ở đây: giá trị của a đã bị xóa khi ra ngoài hàm
+    // }
+    fn get_ref<'a>(param1: &'a i32, param2: &'a i32) -> &'a i32 { // cách fix: dùng lifetime
+        if param1 > param2 {
+            param1
+        } else {
+            param2
         }
     }
 }
-fn call_order() {
-    println!("Calling order...");
-}
-mod back_house {
-    pub struct Breakfast {
-        pub toast: String,
-        pub fruit: String,
-    }
-    impl Breakfast {
-        pub fn monday(toast: &str) -> Breakfast {
-            Breakfast {
-                toast: String::from(toast),
-                fruit: String::from("blueberries"),
-            }    
-        }
-    }
-    pub fn cook_order() {
-        println!("Cooking your order...");
-    }
-    pub fn fix_order() {
-        println!("Fixing your order...");
-        super::call_order();
-        cook_order();
-    }
-}
-fn eat_at_restanrant() {
-    crate::front_house::hosting::add_to_waitlist();
-    crate::front_house::hosting::seat_at_table();
-    let mut order = back_house::Breakfast::monday("fish");
-    call_order();
-    order.toast = String::from("chicken");
-    back_house::fix_order();
-    crate::front_house::serving::take_order();
-    crate::front_house::serving::take_payment();
-}
-```
-
-## Packages:
-- Trong file `Cargo.toml` thêm dưới dòng `[dependencies]`:
-```toml
-# trong ví dụ này ta dùng thư viện hex
-hex = "0.4.3"
-```
-- Trong file `main.rs` thêm
-```rust
-use hex;
-// use hex::{encode, decode}; nếu muốn import nhiều hàm
-// use hex::*; nếu muốn import toàn bộ module
 ```
 
 ## Error handle và result:
@@ -679,7 +676,7 @@ fn main() {
     fn print_access(employee: &Employee) -> Result<(), String> {
         let access = try_access(employee)?;
         println!("Access granted!");
-        Ok(());
+        Ok(())
     }
     let manager = Employee {
         position: Position::Manager,
