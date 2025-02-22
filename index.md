@@ -332,7 +332,7 @@ fn main() {
         - String là một kiểu dữ liệu cho phép lưu trữ chuỗi ký tự
         ```rust
         fn main() {
-            use unicode_segmentation::UnicodeSegmentation
+            use unicode_segmentation::UnicodeSegmentation;
             let s1 = String::from("hello");
             let s2 = String::new();
             let s3 = "hello".to_string();
