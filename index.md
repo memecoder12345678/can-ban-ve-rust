@@ -1,7 +1,7 @@
-# Căn bản về Rust 🦀
+# Căn bản về rust 🦀
 
 ## Biến:
-- Biến trong Rust là bất biến (mặc định)
+- Biến trong rust là bất biến (mặc định)
 ```rust
 fn main() {
     let x = 5; // x là một biến bất biến
@@ -26,7 +26,7 @@ fn main() {
     {
         let x = 10; // x được shadowing
         println!("{}", x); // x là 10
-    } // sau khi đi qua ngoặc nhọn, x vẫn giữ nguyên giá trị ban đầu là 5
+    } // sau khi đi qua khối ngoặc nhọn, x vẫn giữ nguyên giá trị ban đầu là 5
     println!("{}", x); // x vẫn là 5
 }
 ```
@@ -56,9 +56,9 @@ fn main() {
       
         | Điều kiện | Giá trị |
         |----------|--------|
-        | `true`   | đúng   |
-        | `false`  | sai    |
-        | `None`   | rỗng   |
+        | `true`   | Đúng   |
+        | `false`  | Sai    |
+        | `None`   | Không có |
 
     - Character:
         - Character cũng có thể là unicode
@@ -361,7 +361,7 @@ fn main() {
 }
 ```
 
-## Tham chiếu:
+## References:
 - Chỉ có thể tham chiếu cho phép sửa đổi cho một dữ liệu trong một phạm vi cụ thể
 - Không thể có một tham chiếu cho phép sửa đổi nếu một tham chiếu bất biến đã tồn tại trong phạm vi
 ```rust
