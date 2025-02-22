@@ -180,7 +180,7 @@ fn main() {
                 address: String,
             }
             impl ip_address {
-                fn some_fn(){
+                fn some_fn() {
                     println!("Hello, world!");
                 }
             }
@@ -539,12 +539,12 @@ fn main() {
     }
     impl Transform for Data {
         fn revert(&self) -> String {
-            self.str1.chars().rev().collect::<String>()
+            self.str1.chars().rev().collect::<String>();
         }
     }
     impl Transform for Data2 {
         fn revert(&self) -> String {
-            (self.num1 + self.num2).to_string()
+            (self.num1 + self.num2).to_string();
         }
     }
     let a = Data::new(1, 2, "Hello".to_string());
@@ -625,7 +625,9 @@ hex = "0.4.3"
 ```
 - Trong file `main.rs` thêm
 ```rust
-use hex
+use hex;
+// use hex::{encode, decode}; nếu muốn import nhiều hàm
+// use hex::*; nếu muốn import toàn bộ module
 ```
 
 ## Error handle và result:
@@ -677,7 +679,7 @@ fn main() {
     fn print_access(employee: &Employee) -> Result<(), String> {
         let access = try_access(employee)?;
         println!("Access granted!");
-        Ok(())
+        Ok(());
     }
     let manager = Employee {
         position: Position::Manager,
