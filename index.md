@@ -389,7 +389,7 @@ fn main() {
         ```
 
         - Cách khác là sử dụng hàm into
-        
+
         ```rust
         fn main() {
             let x: i32 = 42;
@@ -707,3 +707,54 @@ fn main() {
     print_access(&manager);
 }
 ```
+
+## Macro:
+- Macro khác với function, macro có thể tạo ra code mới (trong quá trình biên dịch), còn function chỉ có thể thực hiện một hành động
+- ### Macro cơ bản
+    - Macro kiểu cơ bản nhất hoạt động như **pattern matching** cho code
+
+    ```rust
+    macro_rules! say_hello { // khai báo macro
+        () => { // macro này không nhận tham số
+            println!("Hello, Rust 🦀"); // thực hiện hành động
+        };
+    }
+    fn main() {
+        say_hello!(); // gọi macro
+    }
+    ```
+
+    - Macro có thể nhận tham số và thực hiện các thao tác linh hoạt
+
+    ```rust
+    macro_rules! repeat { // khai báo macro
+        ($text:expr, $n:expr) => { // macro nhận 2 tham số
+            for _ in 0..$n {
+                println!("{}", $text); // thực hiện hành động
+            } 
+        };
+    }
+    fn main() {
+        repeat!("Hello", 3); // gọi macro
+    }
+    ```
+
+- ### Built-in macros
+    - Trong rust có nhiều macro được **tích hợp sẵn**, ví dụ:
+
+        | **Macro**    | **Chức năng**            |  
+        |-------------|------------------------|  
+        | `println!`  | In ra màn hình         |  
+        | `format!`   | Tạo chuỗi string       |  
+        | `vec!`      | Tạo vector             |  
+        | `assert!`   | Kiểm tra điều kiện     |
+
+    ```rust
+    fn main() {
+        let v = vec![1, 2, 3];
+        println!("Vector: {:?}", v);
+        let s = format!("Tổng: {}", 1 + 2);
+        println!("{}", s);
+        assert!(2 + 2 == 4); // Không lỗi vì điều kiện đúng
+    }
+    ```
