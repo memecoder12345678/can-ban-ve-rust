@@ -775,6 +775,7 @@ fn main() {
         ```
 
         - file `main.rs`:
+          
         ```rust
         use macro_test::Getters; // sử dụng macro Getters
 
