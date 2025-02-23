@@ -9,7 +9,7 @@ fn main() {
     println!("{}", x); // x vẫn là 5
 }
 ```
-- Để có quyền thay đổi giá trị, trước tên biến thêm mut (mutable)
+- Để có quyền thay đổi giá trị, trước tên biến thêm mut (viết tắt của mutable)
 ```rust
 fn main() {
     let mut x = 5; // x là một biến có thể thay đổi
