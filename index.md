@@ -359,6 +359,8 @@ fn main() {
     - Hash map:
         - Hash map là một kiểu dữ liệu cho phép lưu trữ các cặp key-value
         ```rust
+        use std::collections::HashMap // Để dùng hash map, bạn cần phải import nó
+
         fn main() {
             let mu = String::from("MU");
             let mc = String::from("MC");
