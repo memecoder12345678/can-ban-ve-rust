@@ -710,8 +710,8 @@ fn main() {
 
 ## Macro:
 - Macro khác với function, macro có thể tạo ra code mới (trong quá trình biên dịch), còn function chỉ có thể thực hiện một hành động
-- ### Macro cơ bản
-    - Macro kiểu cơ bản nhất hoạt động như **pattern matching** cho code
+- ### Declarative macro
+    - Declarative macro là macro kiểu cơ bản nhất, hoạt động như **pattern matching** cho code
 
     ```rust
     macro_rules! say_hello { // khai báo macro
@@ -724,7 +724,7 @@ fn main() {
     }
     ```
 
-    - Macro có thể nhận tham số và thực hiện các thao tác linh hoạt
+    - Declarative macro có thể nhận tham số và thực hiện các thao tác linh hoạt
 
     ```rust
     macro_rules! repeat { // khai báo macro
@@ -739,22 +739,86 @@ fn main() {
     }
     ```
 
+- ### Procedural macro
+    - Procedural macro là kiểu macro phức tạp hơn declarative macro, hoạt động như một **function** lấy input đầu vào là một Tokenstream, và trả về một Tokenstream khác
+
+    - Dưới đây là ví dụ cơ bản
+        - file `lib.rs`:
+
+        ```rust
+        use proc_macro::TokenStream;
+        use quote::quote;
+        use syn::{parse_macro_input, DeriveInput};
+
+        #[proc_macro_derive(Getters)]
+        pub fn getters_derive(input: TokenStream) -> TokenStream {
+            let input = parse_macro_input!(input as DeriveInput); // chuyển đầu vào thành cấu trúc DeriveInput
+            let struct_name = &input.ident;
+            let fields = if let syn::Data::Struct(data) = input.data { // lấy các trường của struct đầu vào
+                data.fields
+            } else {
+                panic!("Getters chỉ áp dụng cho struct!");
+            };
+            let getters = fields.iter().map(|field| { // tạo các hàm getter cho từng trường
+                let field_name = &field.ident;
+                let field_type = &field.ty;
+                quote! {
+                    impl #struct_name {
+                        pub fn #field_name(&self) -> &#field_type { // hàm getter cho trườg
+                            &self.#field_name // trả về giá trị của trường
+                        }
+                    }
+                }
+            });
+            TokenStream::from(quote! { #(#getters)* }) // trả về code được tạo
+        }
+        ```
+
+        - file `main.rs`:
+        ```rust
+        use macro_test::Getters; // sử dụng macro Getters
+
+        fn main() {
+            #[derive(Getters)] // sử dụng macro Getters
+            struct User {
+                name: String,
+                age: u8,
+                role: Role,
+            }
+            #[derive(Debug)]
+            enum Role {
+                Admin,
+                Member,
+            }
+            let user = User {
+                name: "MemeCoder".to_string(),
+                age: 14,
+                role: Role::Admin,
+            };
+            println!("{} ({} tuổi)", user.name(), user.age());
+            match user.role {
+                Role::Admin => println!("{} là quản trị viên", user.name()),
+                Role::Member => println!("{} là thành viên", user.name()),
+            }
+        }
+        ```
+
 - ### Built-in macros
     - Trong rust có nhiều macro được **tích hợp sẵn**, ví dụ:
 
-        | **Macro**    | **Chức năng**            |  
-        |-------------|------------------------|  
-        | `println!`  | In ra màn hình         |  
-        | `format!`   | Tạo chuỗi string       |  
-        | `vec!`      | Tạo vector             |  
-        | `assert!`   | Kiểm tra điều kiện     |
+        | **Macro**                        | **Chức năng**          |  
+        |----------------------------------|------------------------|  
+        | `println!`                       | In ra màn hình         |  
+        | `format!`                        | Tạo chuỗi string       |  
+        | `vec!`                           | Tạo vector             |  
+        | `assert!` và các biến thể khác   | Kiểm tra điều kiện     |
 
-      ```rust
-      fn main() {
-          let v = vec![1, 2, 3]; // tạo vector 
-          println!("Vec: {:?}", v); // in ra màn hình
-          let s = format!("Sum: {}", 1 + 2); // tạo chuỗi
-          println!("{}", s);
-          assert!(2 + 2 == 4); // kiểm tra điều kiện
-      }
-      ```
+        ```rust
+        fn main() {
+            let v = vec![1, 2, 3]; // tạo vector 
+            println!("Vec: {:?}", v); // in ra màn hình
+            let s = format!("Sum: {}", 1 + 2); // tạo chuỗi
+            println!("{}", s);
+            assert!(2 + 2 == 4); // kiểm tra điều kiện
+        }
+        ```
