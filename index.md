@@ -377,6 +377,7 @@ fn main() {
     - ### Ép kiểu:
         - Rust không thể tự động ép kiểu như các ngôn ngữ khác
         - Để ép kiểu, ta phải sử dụng từ khoá `as` để chuyển đổi kiểu dữ liệu
+
         ```rust
         fn main() {
             let x = 5; // x: i32
@@ -386,7 +387,9 @@ fn main() {
 
         }
         ```
+
         - Cách khác là sử dụng hàm into
+        
         ```rust
         fn main() {
             let x: i32 = 42;
