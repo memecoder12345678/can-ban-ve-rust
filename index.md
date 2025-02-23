@@ -141,239 +141,258 @@ fn main() {
 
     - Character:
         - Character cũng có thể là unicode
-```rust
-fn main() {
-    let x = 'a'; // x là một kí tự
-    let y = '💀'; // y là một kí tự unicode
-    println!("{}", x); // x là 'a'
-    println!("{}", y); // y là '💀'
-}
-```
+        ```rust
+        fn main() {
+            let x = 'a'; // x là một kí tự
+            let y = '💀'; // y là một kí tự unicode
+            println!("{}", x); // x là 'a'
+            println!("{}", y); // y là '💀'
+        }
+        ```
 
 - ### kiểu dữ liệu phức tạp:
     - Tuple:
         - Tuple là một tập hợp các phần tử có nhiều kiểu dữ liệu khác nhau
-```rust
-fn main() {
-    let x = (1, 2, 3); // x là một tuple có 3 phần
-    let (a, b, c) = x; // x được giải phóng thành 3 biến
-    let a = x.0; // a nhận giá trị của phần đầu tiên
-    let b = x.1; // b nhận giá trị của phần thứ 2
-    let c = x.2; // c nhận giá trị của phần thứ 3
-    println!("{}, {}, {}", a, b, c); // in ra 1, 2, 3
-}
-```
+        ```rust
+        fn main() {
+            let x = (1, 2, 3); // x là một tuple có 3 phần
+            let (a, b, c) = x; // x được giải phóng thành 3 biến
+            let a = x.0; // a nhận giá trị của phần đầu tiên
+            let b = x.1; // b nhận giá trị của phần thứ 2
+            let c = x.2; // c nhận giá trị của phần thứ 3
+            println!("{}, {}, {}", a, b, c); // in ra 1, 2, 3
+        }
+        ```
 
     - Array:
         - Array là một tập hợp có kích thước cố định và các phần tử có cùng kiểu dữ liệu
-```rust
-fn main() {
-    let x = [1, 2, 3]; // x là một array có 3 phần
-    for i in x.iter() {
-            println!("{}", i);
-    } // in ra từng phần của array
-}
-```
+        ```rust
+        fn main() {
+            let x = [1, 2, 3]; // x là một array có 3 phần
+            for i in x.iter() {
+                    println!("{}", i);
+            } // in ra từng phần của array
+        }
+        ```
 
     - Structs:
         - Structs là một tập hợp các phần tử có nhiều kiểu dữ liệu khác nhau và có thể có các phương thức
-```rust
-fn main() {
-    #[derive(Debug)]
-    struct Point {
-        x: i32,
-        y: i32,
-    }
-    let p1 = Point {
-        x: 1,
-        y: 2,
-    };
-    let x1 = p1.x; // x nhận giá trị của phần x
-    let y1 = p1.y; // y nhận giá trị của phần y
-    println!("Point({}, {})", x1, y1); // in ra Point(1, 2)
-    fn create_new_point(x: i32, y: i32) -> Point {
-        Point {
-            x: x,
-            y: y,
-        }
-    }
-    let p2 = create_new_point(3, 4);
-    let x2 = p2.x;
-    let y2 = p2.y;
-    println!("Point({}, {})", x2, y2); // in ra Point(3, 4)
-    // println!("{}", p2); <--- lỗi ở đây: không thể in được
-    println!("{:#?}", p2); // cách fix: dùng trình debug
-    let p3 = Point {
-        x: 5,
-        ..p2 // copy các phần còn lại từ p2
-    };
-    let x3 = p3.x;
-    let y3 = p3.y;
-    println!("Point({}, {})", x3, y3); // in ra Point(5, 4)
-    struct hinh_chu_nhat {
-        dai: u32,
-        rong: u32,
-    }
-    fn dien_tich(kich_thuoc: &hinh_chu_nhat) -> u32 {
-        kich_thuoc.dai * kich_thuoc.rong
-    }
-    let hinh_chu_nhat = hinh_chu_nhat {
-        dai: 10,
-        rong: 5,
-    };
-    println!("kích thước hình chữ nhật: {}", dien_tich(&hinh_chu_nhat));
-    impl hinh_chu_nhat {
-        fn dien_tich(&self) -> u32 {
-            self.dai * self.rong
-        }
-        fn chua(&self, hinh_chu_nhat_khac: &hinh_chu_nhat) -> bool {
-            self.dai > hinh_chu_nhat_khac.dai && self.rong > hinh_chu_nhat_khac.rong
-        }
-        fn hinh_vuong(kich_thuoc: u32) -> hinh_chu_nhat {
-            hinh_chu_nhat {
-                dai: kich_thuoc,
-                rong: kich_thuoc,
+        ```rust
+        fn main() {
+            #[derive(Debug)]
+            struct Point {
+                x: i32,
+                y: i32,
             }
+            let p1 = Point {
+                x: 1,
+                y: 2,
+            };
+            let x1 = p1.x; // x nhận giá trị của phần x
+            let y1 = p1.y; // y nhận giá trị của phần y
+            println!("Point({}, {})", x1, y1); // in ra Point(1, 2)
+            fn create_new_point(x: i32, y: i32) -> Point {
+                Point {
+                    x: x,
+                    y: y,
+                }
+            }
+            let p2 = create_new_point(3, 4);
+            let x2 = p2.x;
+            let y2 = p2.y;
+            println!("Point({}, {})", x2, y2); // in ra Point(3, 4)
+            // println!("{}", p2); <--- lỗi ở đây: không thể in được
+            println!("{:#?}", p2); // cách fix: dùng trình debug
+            let p3 = Point {
+                x: 5,
+                ..p2 // copy các phần còn lại từ p2
+            };
+            let x3 = p3.x;
+            let y3 = p3.y;
+            println!("Point({}, {})", x3, y3); // in ra Point(5, 4)
+            struct hinh_chu_nhat {
+                dai: u32,
+                rong: u32,
+            }
+            fn dien_tich(kich_thuoc: &hinh_chu_nhat) -> u32 {
+                kich_thuoc.dai * kich_thuoc.rong
+            }
+            let hinh_chu_nhat = hinh_chu_nhat {
+                dai: 10,
+                rong: 5,
+            };
+            println!("kích thước hình chữ nhật: {}", dien_tich(&hinh_chu_nhat));
+            impl hinh_chu_nhat {
+                fn dien_tich(&self) -> u32 {
+                    self.dai * self.rong
+                }
+                fn chua(&self, hinh_chu_nhat_khac: &hinh_chu_nhat) -> bool {
+                    self.dai > hinh_chu_nhat_khac.dai && self.rong > hinh_chu_nhat_khac.rong
+                }
+                fn hinh_vuong(kich_thuoc: u32) -> hinh_chu_nhat {
+                    hinh_chu_nhat {
+                        dai: kich_thuoc,
+                        rong: kich_thuoc,
+                    }
+                }
+            } // thêm phương thức vào struct
+            println!("kích thước hình chữ nhật: {}", hinh_chu_nhat.dien_tich());
+            let hinh_chu_nhat_khac = hinh_chu_nhat {
+                dai: 8,
+                rong: 3,
+            };
+            println!("hình chữ nhật có thể chứa hình chữ nhật khác: {}", hinh_chu_nhat.chua(&hinh_chu_nhat_khac));
         }
-    } // thêm phương thức vào struct
-    println!("kích thước hình chữ nhật: {}", hinh_chu_nhat.dien_tich());
-    let hinh_chu_nhat_khac = hinh_chu_nhat {
-        dai: 8,
-        rong: 3,
-    };
-    println!("hình chữ nhật có thể chứa hình chữ nhật khác: {}", hinh_chu_nhat.chua(&hinh_chu_nhat_khac));
-}
-```
+        ```
     
     - Enum:
         - Enum là một kiểu dữ liệu cho phép định nghĩa một tập hợp các giá trị cố định
-```rust
-fn main() {
-    #[derive(Debug)]
-    enum ip_address_kind {
-        IPv4(String),
-        IPv6(String),
-    }
-    #[derive(Debug)]
-    struct ip_address {
-        kind: ip_address_kind,
-        address: String,
-    }
-    impl ip_address {
-        fn some_fn(){
-            println!("Hello, world!");
+        ```rust
+        fn main() {
+            #[derive(Debug)]
+            enum ip_address_kind {
+                IPv4(String),
+                IPv6(String),
+            }
+            #[derive(Debug)]
+            struct ip_address {
+                kind: ip_address_kind,
+                address: String,
+            }
+            impl ip_address {
+                fn some_fn(){
+                    println!("Hello, world!");
+                }
+            }
+            let localhost = ip_address_kind::IPv4(String::from("127.0.0.1"));
+            println!("localhost: {:#?}", localhost);
         }
-    }
-    let localhost = ip_address_kind::IPv4(String::from("127.0.0.1"));
-    println!("localhost: {:#?}", localhost);
-}
-```
+        ```
         - Option enum:
             - Option enum là một kiểu dữ liệu cho phép định nghĩa một giá trị có thể là một trong hai giá trị: có hoặc không
-```rust
-fn main() {
-    let x = 5;
-    let y = Some(5);
-    // let z = x + y; <--- lỗi ở đây: không thể cộng số nguyên và Option
-    let z = x + y.unwrap_or(0); // cách fix: nếu y là None thì dùng 0
-    println!("z: {}", z);
-}
-```
+            ```rust
+            fn main() {
+                let x = 5;
+                let y = Some(5);
+                // let z = x + y; <--- lỗi ở đây: không thể cộng số nguyên và Option
+                let z = x + y.unwrap_or(0); // cách fix: nếu y là None thì dùng 0
+                println!("z: {}", z);
+            }
+            ```
     
     - Vector:
         - Vector là một kiểu dữ liệu cho phép lưu trữ một danh sách các giá trị có thể phóng to thu nhỏ
-```rust
-fn main() {
-    let v1 = vec![1, 2, 3];
-    println!("v1: {:?}", v1);
-    let mut v2 = Vec::new();
-    v2.push(1);
-    v2.push(2);
-    v2.push(3);
-    println!("v2: {:?}", v2);
-    let two = &v1[1];
-    println!("two: {}", two);
-    match v1.get(1) {
-        Some(three) => println!("two: {}", three),
-        None => println!("None"),
-    }
-    for i in &v2 {
-        println!("i: {}", i);
-    } // in ra từng giá trị của v2
-    for i in &mut v2 {
-        *i += 10;
-    } // in ra từng giá trị của v2
-    for i in &v2 {
-        println!("i: {}", i);
-    } // in ra từng giá trị của v2
-}
-```
+        ```rust
+        fn main() {
+            let v1 = vec![1, 2, 3];
+            println!("v1: {:?}", v1);
+            let mut v2 = Vec::new();
+            v2.push(1);
+            v2.push(2);
+            v2.push(3);
+            println!("v2: {:?}", v2);
+            let two = &v1[1];
+            println!("two: {}", two);
+            match v1.get(1) {
+                Some(three) => println!("two: {}", three),
+                None => println!("None"),
+            }
+            for i in &v2 {
+                println!("i: {}", i);
+            } // in ra từng giá trị của v2
+            for i in &mut v2 {
+                *i += 10;
+            } // in ra từng giá trị của v2
+            for i in &v2 {
+                println!("i: {}", i);
+            } // in ra từng giá trị của v2
+        }
+        ```
         - Ví dụ với nữa enum
-```rust
-fn main() {
-    enum SheetCell {
-        Int(i32),
-        Float(f64),
-        Text(String),
-    }
-    let row = vec![
-        SheetCell::Int(1),
-        SheetCell::Float(3.14),
-        SheetCell::Text(String::from("hello")),
-    ];
-    match &row[0] {
-        SheetCell::Float(f) => println!("{}", f),
-        _ => println!("Not a float"),
-    }
-}
-```
+        ```rust
+        fn main() {
+            enum SheetCell {
+                Int(i32),
+                Float(f64),
+                Text(String),
+            }
+            let row = vec![
+                SheetCell::Int(1),
+                SheetCell::Float(3.14),
+                SheetCell::Text(String::from("hello")),
+            ];
+            match &row[0] {
+                SheetCell::Float(f) => println!("{}", f),
+                _ => println!("Not a float"),
+            }
+        }
+        ```
 
     - String:
         - String là một kiểu dữ liệu cho phép lưu trữ chuỗi ký tự
-```rust
-fn main() {
-    use unicode_segmentation::UnicodeSegmentation;
-    let s1 = String::from("hello");
-    let s2 = String::new();
-    let s3 = "hello".to_string();
-    println!("{}", s1);
-    println!("{}", s2);
-    println!("{}", s3);
-    // s4 = s2 + " world";
-    // println!("{}", s2); <--- lỗi ở đây: giá trị của s2 đã bị chuyển giao quyền sở hữu
-    let mut s4: String = String::new();
-    s4 = s1.clone() + " world"; // cách fix
-    println!("{}", s4);
-    for i in s4.bytes() {
-        println!("{}", i);
-    }
-    for i in s4.chars() {
-        println!("{}", i);
-    }
-    for i in s4.graphemes(true) {
-        println!("{}", i);
-    }
-}
-```
+        ```rust
+        fn main() {
+            use unicode_segmentation::UnicodeSegmentation;
+            let s1 = String::from("hello");
+            let s2 = String::new();
+            let s3 = "hello".to_string();
+            println!("{}", s1);
+            println!("{}", s2);
+            println!("{}", s3);
+            // s4 = s2 + " world";
+            // println!("{}", s2); <--- lỗi ở đây: giá trị của s2 đã bị chuyển giao quyền sở hữu
+            let mut s4: String = String::new();
+            s4 = s1.clone() + " world"; // cách fix
+            println!("{}", s4);
+            for i in s4.bytes() {
+                println!("{}", i);
+            }
+            for i in s4.chars() {
+                println!("{}", i);
+            }
+            for i in s4.graphemes(true) {
+                println!("{}", i);
+            }
+        }
+        ```
 
     - Hash map:
         - Hash map là một kiểu dữ liệu cho phép lưu trữ các cặp key-value
-```rust
-fn main() {
-    let mu = String::from("MU");
-    let mc = String::from("MC");
-    let mut scores = HashMap::new();
-    scores.insert(mu, 10);
-    scores.insert(mc, 20);
-    scores.entry(mc).or_insert(30).get(); // nếu không có key thì thêm key và value
-    let team_name = String::from("MU");
-    let score = scores.get(&team_name);
-    for (key, value) in &scores {
-        println!("{}: {}", key, value);
-    }
-    println!("{:?}", score);
-}
-```
+        ```rust
+        fn main() {
+            let mu = String::from("MU");
+            let mc = String::from("MC");
+            let mut scores = HashMap::new();
+            scores.insert(mu, 10);
+            scores.insert(mc, 20);
+            scores.entry(mc).or_insert(30).get(); // nếu không có key thì thêm key và value
+            let team_name = String::from("MU");
+            let score = scores.get(&team_name);
+            for (key, value) in &scores {
+                println!("{}: {}", key, value);
+            }
+            println!("{:?}", score);
+        }
+        ```
+    - ### Ép kiểu:
+        - Rust không thể tự động ép kiểu như các ngôn ngữ khác
+        - Để ép kiểu, ta phải sử dụng từ khoá `as` để chuyển đổi kiểu dữ liệu
+        ```rust
+        fn main() {
+            let x = 5; // x: i32
+            let y = 3.14;
+            // let z = x + y; <--- lỗi ở đây: rust không thể tự động ép kiểu i32 sang f64
+            let z = x as f64 + y; // cách fix: ép kiểu của x sang f64 rồi mới thực hiện phép cộng
+
+        }
+        ```
+        - Cách khác là sử dụng hàm into
+        ```rust
+        fn main() {
+            let x: i32 = 42;
+            let y: f64 = x.into(); // Chuyển đổi i32 -> f64
+        }
+        ```
 
 ## Match:
 - Match là một cách để kiểm tra giá trị của một biến và thực hiện một hành động dựa trên giá trị đó
