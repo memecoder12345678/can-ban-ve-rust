@@ -749,12 +749,12 @@ fn main() {
         | `vec!`      | Tạo vector             |  
         | `assert!`   | Kiểm tra điều kiện     |
 
-        ```rust
-        fn main() {
-            let v = vec![1, 2, 3];
-            println!("Vector: {:?}", v);
-            let s = format!("Tổng: {}", 1 + 2);
-            println!("{}", s);
-            assert!(2 + 2 == 4); // Không lỗi vì điều kiện đúng
-        }
-        ```
+      ```rust
+      fn main() {
+          let v = vec![1, 2, 3]; // tạo vector 
+          println!("Vec: {:?}", v); // in ra màn hình
+          let s = format!("Sum: {}", 1 + 2); // tạo chuỗi
+          println!("{}", s);
+          assert!(2 + 2 == 4); // kiểm tra điều kiện
+      }
+      ```
