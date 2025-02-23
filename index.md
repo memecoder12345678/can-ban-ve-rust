@@ -811,7 +811,7 @@ fn main() {
         | `println!`                       | In ra màn hình         |  
         | `format!`                        | Tạo chuỗi string       |  
         | `vec!`                           | Tạo vector             |  
-        | `assert!` và các biến thể khác   | Kiểm tra điều kiện     |
+        | `assert!` và các `biến thể` khác   | Kiểm tra điều kiện     |
 
         ```rust
         fn main() {
