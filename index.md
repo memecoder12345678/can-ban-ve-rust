@@ -205,7 +205,7 @@ fn main() {
             println!("{:#?}", p2); // cách fix: dùng trình debug
             let p3 = Point {
                 x: 5,
-                ..p2 // copy các phần còn lại từ p2
+                ..p2 // copy các phần tử còn lại từ p2
             };
             let x3 = p3.x;
             let y3 = p3.y;
@@ -275,7 +275,7 @@ fn main() {
                 let x = 5;
                 let y = Some(5);
                 // let z = x + y; <--- lỗi ở đây: không thể cộng số nguyên và Option
-                let z = x + y.unwrap_or(0); // cách fix: nếu y là None thì dùng 0
+                let z = x + y.unwrap_or(0); // cách fix: nếu y là None thì dùng 0, còn lại dùng giá trị trong y
                 println!("z: {}", z);
             }
             ```
@@ -302,7 +302,7 @@ fn main() {
             } // in ra từng giá trị của v2
             for i in &mut v2 {
                 *i += 10;
-            } // in ra từng giá trị của v2
+            } // cộng từng giá trị của v2 với 10
             for i in &v2 {
                 println!("i: {}", i);
             } // in ra từng giá trị của v2
@@ -339,10 +339,10 @@ fn main() {
             println!("{}", s1);
             println!("{}", s2);
             println!("{}", s3);
-            // s4 = s2 + " world";
-            // println!("{}", s2); <--- lỗi ở đây: giá trị của s2 đã bị chuyển giao quyền sở hữu
+            // s4 = s1 + " world";
+            // println!("{}", s1); <--- lỗi ở đây: giá trị của s1 đã bị chuyển giao quyền sở hữu
             let mut s4: String = String::new();
-            s4 = s1.clone() + " world"; // cách fix
+            s4 = s1.clone() + " world"; // cách fix: clone giá trị của s1
             println!("{}", s4);
             for i in s4.bytes() {
                 println!("{}", i);
@@ -460,61 +460,74 @@ fn main() {
 
 ## Crates và Modules:
 - Crates là một tập hợp các module và các file có thể được sử dụng trong một dự án Rust
-```rust
-mod front_house {
-    pub mod hosting {
-        pub fn add_to_waitlist() {
-            println!("Adding to waitlist...");
+- Ví dụ cơ bản
+    - file `lib.rs` 
+
+    ```rust
+    mod front_house {
+        pub mod hosting {
+            pub fn add_to_waitlist() {
+                println!("Adding to waitlist...");
+            }
+            pub fn seat_at_table() {
+                println!("Seating you at your table...");
+            }
         }
-        pub fn seat_at_table() {
-            println!("Seating you at your table...");
-        }
-    }
-    pub mod serving {
-        pub fn take_order() {
-            println!("Taking your order...");
-        }
-        pub fn take_payment() {
-            println!("Processing payment...");
-        }
-    }
-}
-fn call_order() {
-    println!("Calling order...");
-}
-mod back_house {
-    pub struct Breakfast {
-        pub toast: String,
-        pub fruit: String,
-    }
-    impl Breakfast {
-        pub fn monday(toast: &str) -> Breakfast {
-            Breakfast {
-                toast: String::from(toast),
-                fruit: String::from("blueberries"),
-            }    
+        pub mod serving {
+            pub fn take_order() {
+                println!("Taking your order...");
+            }
+            pub fn take_payment() {
+                println!("Processing payment...");
+            }
         }
     }
-    pub fn cook_order() {
-        println!("Cooking your order...");
+    fn call_order() {
+        println!("Calling order...");
     }
-    pub fn fix_order() {
-        println!("Fixing your order...");
-        super::call_order();
-        cook_order();
+    mod back_house {
+        pub struct Breakfast {
+            pub toast: String,
+            pub fruit: String,
+        }
+        impl Breakfast {
+            pub fn monday(toast: &str) -> Breakfast {
+                Breakfast {
+                    toast: String::from(toast),
+                    fruit: String::from("blueberries"),
+                }    
+            }
+        }
+        pub fn cook_order() {
+            println!("Cooking your order...");
+        }
+        pub fn fix_order() {
+            println!("Fixing your order...");
+            super::call_order();
+            cook_order();
+        }
     }
-}
-fn eat_at_restanrant() {
-    crate::front_house::hosting::add_to_waitlist();
-    crate::front_house::hosting::seat_at_table();
-    let mut order = back_house::Breakfast::monday("fish");
-    call_order();
-    order.toast = String::from("chicken");
-    back_house::fix_order();
-    crate::front_house::serving::take_order();
-    crate::front_house::serving::take_payment();
-}
-```
+    pub fn eat_at_restanrant() {
+        crate::front_house::hosting::add_to_waitlist();
+        crate::front_house::hosting::seat_at_table();
+        let mut order = back_house::Breakfast::monday("fish");
+        call_order();
+        order.toast = String::from("chicken");
+        back_house::fix_order();
+        crate::front_house::serving::take_order();
+        crate::front_house::serving::take_payment();
+    }
+    ```
+
+    - file `main.rs`
+
+    ```rust
+    use crate::eat_at_restanrant;
+
+    fn main() {
+        eat_at_restanrant();
+    }
+    ``` 
 
 ## Packages:
 - Trong file `Cargo.toml` thêm dưới dòng `[dependencies]`:
