@@ -1,5 +1,9 @@
 # Căn bản về rust 🦀
 
+# Trước khi đọc:
+- Trang web *`căn bản về Rust 🦀` là một tài liệu tóm tắt những kiến thức nền tảng cơ bản về rust (không bao gồm cú pháp)
+- Do đó, nội dung có thể không đầy đủ. Nếu bạn muốn tìm hiểu chi tiết hơn, vui lòng truy cập tài liệu chính thức bằng tiếng Việt tại: [Rust Tiếng Việt](https://rust-tieng-viet.github.io/)
+
 ## Biến:
 - Biến trong rust là bất biến (mặc định)
 ```rust
