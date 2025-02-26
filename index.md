@@ -109,7 +109,7 @@ fn main() {
     }
     fn y() {
         let mut a = String::from("World"); // a được lưu trữ trên heap
-        a.push_str("!");
+        a.push_str("!"); // thêm vào char trên heap
     }
     x();
 }
@@ -173,9 +173,9 @@ fn main() {
         ```rust
         fn main() {
             let x = [1, 2, 3]; // x là một array có 3 phần
-            for i in x.iter() {
-                    println!("{}", i);
-            } // in ra từng phần của array
+            for i in x.iter() { // lặp qua các phần tử của x
+                    println!("{}", i); // in ra từng phần của x
+            }
         }
         ```
 
@@ -226,7 +226,7 @@ fn main() {
                 rong: 5,
             };
             println!("kích thước hình chữ nhật: {}", dien_tich(&hinh_chu_nhat));
-            impl hinh_chu_nhat {
+            impl hinh_chu_nhat { // thêm phương thức vào struct
                 fn dien_tich(&self) -> u32 {
                     self.dai * self.rong
                 }
@@ -239,7 +239,7 @@ fn main() {
                         rong: kich_thuoc,
                     }
                 }
-            } // thêm phương thức vào struct
+            }
             println!("kích thước hình chữ nhật: {}", hinh_chu_nhat.dien_tich());
             let hinh_chu_nhat_khac = hinh_chu_nhat {
                 dai: 8,
@@ -254,7 +254,7 @@ fn main() {
         ```rust
         fn main() {
             #[derive(Debug)]
-            enum ip_address_kind {
+            enum ip_address_kind { // định nghĩa enum
                 IPv4(String),
                 IPv6(String),
             }
@@ -290,8 +290,8 @@ fn main() {
         fn main() {
             let v1 = vec![1, 2, 3];
             println!("v1: {:?}", v1);
-            let mut v2 = Vec::new();
-            v2.push(1);
+            let mut v2 = Vec::new(); // tạo vector mới
+            v2.push(1); // thêm giá trị 1 vào
             v2.push(2);
             v2.push(3);
             println!("v2: {:?}", v2);
@@ -301,7 +301,7 @@ fn main() {
                 Some(three) => println!("two: {}", three),
                 None => println!("None"),
             }
-            for i in &v2 {
+            for i in &v2 { // duyệt từng phần tử của vector v2
                 println!("i: {}", i);
             } // in ra từng giá trị của v2
             for i in &mut v2 {
@@ -309,7 +309,7 @@ fn main() {
             } // cộng từng giá trị của v2 với 10
             for i in &v2 {
                 println!("i: {}", i);
-            } // in ra từng giá trị của v2
+            }
         }
         ```
         - Ví dụ với nữa enum
@@ -336,7 +336,8 @@ fn main() {
         - String là một kiểu dữ liệu cho phép lưu trữ chuỗi ký tự
         ```rust
         fn main() {
-            use unicode_segmentation::UnicodeSegmentation;
+            use unicode_segmentation::UnicodeSegmentation; // ta sử dụng thư viện unicode_segmentation để thao tác chuỗi chính xác
+            
             let s1 = String::from("hello");
             let s2 = String::new();
             let s3 = "hello".to_string();
@@ -348,13 +349,13 @@ fn main() {
             let mut s4: String = String::new();
             s4 = s1.clone() + " world"; // cách fix: clone giá trị của s1
             println!("{}", s4);
-            for i in s4.bytes() {
+            for i in s4.bytes() { // in ra từng ký tự dưới dạng byte
                 println!("{}", i);
             }
-            for i in s4.chars() {
+            for i in s4.chars() { // in ra từng ký tự dưới dạng char
                 println!("{}", i);
             }
-            for i in s4.graphemes(true) {
+            for i in s4.graphemes(true) { // in ra từng ký tự dưới dạng grapheme
                 println!("{}", i);
             }
         }
@@ -369,13 +370,13 @@ fn main() {
         fn main() {
             let mu = String::from("MU");
             let mc = String::from("MC");
-            let mut scores = HashMap::new();
+            let mut scores = HashMap::new(); // tạo một hash map mới
             scores.insert(mu, 10);
             scores.insert(mc, 20);
             scores.entry(mc).or_insert(30).get(); // nếu không có key thì thêm key và value
             let team_name = String::from("MU");
-            let score = scores.get(&team_name);
-            for (key, value) in &scores {
+            let score = scores.get(&team_name); // lấy giá trị của key
+            for (key, value) in &scores { // duyệt cả key và value
                 println!("{}: {}", key, value);
             }
             println!("{:?}", score);
@@ -422,23 +423,23 @@ fn main() {
         Shark,
     }
     fn decimals(coin: Coin) -> u32 {
-        match coin {
-            Coin::Bitcoin(bala) => {
+        match coin { // kiểm tra giá trị của  biến coin
+            Coin::Bitcoin(bala) => { // nếu coin là Bitcoin
                 println!("Bitcoin match!");
                 println!("I'm a {:#?}", bala);
                 96_268
             }
-            Coin::Ethereum(bala) => {
+            Coin::Ethereum(bala) => { // nếu coin là Ethereum
                 println!("Ethereum match!");
                 println!("I'm a {:#?}", bala);
                 2_674
             }
-            Coin::Near(bala) => {
+            Coin::Near(bala) => { // nếu coin là Near
                 println!("Near match!");
                 println!("I'm a {:#?}", bala);
                 3
             }
-            Coin::Solana(bala) => {
+            Coin::Solana(bala) => { // nếu coin là Solana
                 println!("Solana match!");
                 println!("I'm a {:#?}", bala);
                 170
@@ -466,7 +467,7 @@ fn main() {
 ```
 
 ## Crates và Modules:
-- Crates là một tập hợp các module và các file có thể được sử dụng trong một dự án Rust
+- Crates là một tập hợp các module và các file có thể được sử dụng trong một dự án rust
 - Ví dụ cơ bản
     - file `lib.rs` 
 
@@ -491,6 +492,7 @@ fn main() {
     }
     fn call_order() {
         println!("Calling order...");
+        crate::cook_order();
     }
     mod back_house {
         pub struct Breakfast {
@@ -511,10 +513,9 @@ fn main() {
         pub fn fix_order() {
             println!("Fixing your order...");
             super::call_order();
-            cook_order();
         }
     }
-    pub fn eat_at_restanrant() {
+    pub fn eat_at_restaurant() {
         crate::front_house::hosting::add_to_waitlist();
         crate::front_house::hosting::seat_at_table();
         let mut order = back_house::Breakfast::monday("fish");
@@ -529,10 +530,10 @@ fn main() {
     - file `main.rs`
 
     ```rust
-    use crate::eat_at_restanrant;
+    use restaurant::eat_at_restaurant;
 
     fn main() {
-        eat_at_restanrant();
+        eat_at_restaurant();
     }
     ``` 
 
@@ -544,7 +545,9 @@ hex = "0.4.3"
 ```
 - Trong file `main.rs` thêm
 ```rust
-use hex
+use hex;
+// use hex::{encode, decode} nếu muốn import nhiều hàm
+// use hex::*; nếu muốn import tất cả (không khuyến khích)
 ```
 - ### Bonus top 10 packages hay được sử dụng:
 1. **serde** - Chuyển đổi dữ liệu (JSON, YAML, v.v.)
@@ -564,7 +567,7 @@ use hex
 fn main() {
     let number_list = vec![1, 2, 3, 4, 5];
     let char_list = vec!['a', 'b', 'c', 'd', 'e'];
-    fn get_largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+    fn get_largest<T: PartialOrd + Copy>(list: &[T]) -> T { // T: PartialOrd + Copy
         let mut largest = list[0];
         for &item in list.iter() {
             if item > largest {
@@ -636,12 +639,12 @@ fn main() {
             println!("Revert Data..."); // hàm mặc định
         };
     }
-    impl Transform for Data {
+    impl Transform for Data { // thực hiện trait
         fn revert(&self) -> String {
             self.str1.chars().rev().collect::<String>()
         }
     }
-    impl Transform for Data2 {
+    impl Transform for Data2 { // thực hiện trait
         fn revert(&self) -> String {
             (self.num1 + self.num2).to_string()
         }
@@ -716,18 +719,18 @@ fn main() {
     }
     fn try_access(employee: &Employee) -> Result<(), String> {
         match employee.status {
-            Status::Denied => return Err("Access denied".to_owned()),
-            _ => (),
+            Status::Denied => return Err("Access denied".to_owned()), // thông báo lỗi
+            _ => (), // nếu không bị lỗi, tiếp tục
         }
         match employee.position {
             Position::CEO => Ok(()),
             Position::CTO => Ok(()),
             Position::Manager => Ok(()),
-            _ => Err("invalid position".to_owned()),
+            _ => Err("invalid position".to_owned()), // thông báo lỗi cho các trường hợp không hợp lệ
         }
     }
     fn print_access(employee: &Employee) -> Result<(), String> {
-        let access = try_access(employee)?;
+        try_access(employee)?;
         println!("Access granted!");
         Ok(())
     }
@@ -837,6 +840,7 @@ fn main() {
 
 ## Macro:
 - Macro khác với function, macro có thể tạo ra code mới (trong quá trình biên dịch), còn function chỉ có thể thực hiện một hành động
+- Macro được gọi trong quá trình biên dịch, còn function được gọi trong quá trình chạy
 - ### Declarative macro
     - Declarative macro là macro kiểu cơ bản nhất, hoạt động như **pattern matching** cho code
 
