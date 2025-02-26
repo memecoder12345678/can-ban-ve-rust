@@ -1,6 +1,6 @@
 # Căn bản về rust 🦀
 
-# Trước khi đọc:
+## Trước khi đọc:
 - Trang web `Căn bản về Rust 🦀` là một tài liệu tóm tắt những kiến thức nền tảng cơ bản về rust (không bao gồm cú pháp)
 - Do đó, nội dung có thể không đầy đủ. Nếu bạn muốn tìm hiểu chi tiết hơn, vui lòng truy cập tài liệu chính thức bằng tiếng Việt tại: [Rust Tiếng Việt](https://rust-tieng-viet.github.io/)
 
@@ -363,7 +363,7 @@ fn main() {
     - Hash map:
         - Hash map là một kiểu dữ liệu cho phép lưu trữ các cặp key-value
         ```rust
-        use std::collections::HashMap // để dùng hash map, bạn cần phải import nó
+        use std::collections::HashMap // để dùng hash map, bạn cần phải import nó từ std::collections
 
         fn main() {
             let mu = String::from("MU");
@@ -726,6 +726,102 @@ fn main() {
     print_access(&manager);
 }
 ```
+## Multithreading:
+- Đa luồng (Multithreading) cho phép chương trình thực hiện nhiều tác vụ cùng một lúc
+- Trong rust, đa luồng được sử dụng thông qua `std::thread`
+
+- ### Tạo một luồng mới:
+    - Để tạo một luồng mới, ta dùng hàm `thread::spawn()`
+
+    ```rust
+    use std::thread; // import std::thread
+    use std::thread::JoinHandle; // cách fix: dùng JoinHandle để đảm bảo luồng a chạy xong trước khi luồng b chạy
+
+    fn main() {
+        let interations = 10;
+        let a: JoinHandle<()> = thread::spawn(|| { // tạo một luồng mới
+            for i in 1..10 {
+                println!("A: {}", i);
+            } // hành động đều được trong luồng này
+        });
+        let b = thread::spawn(|| { // <--- vấn đề: luồng này sẽ chạy xen lẫn luồng a
+            for i in 1..10 {
+                println!("B: {}", i);
+            }
+        });
+        a.join();
+        b.join();
+    }
+    ```
+
+- ### Channels:
+    - Channels là cách để các luồng giao tiếp với nhau
+    - Trong ví dụ này ta sẽ dùng `Crossbeam Channel 0.5.1`
+
+    ```rust
+    use crossbeam_channel::unbounded; // import crossbeam-channel
+    use std::thread;
+
+    fn main() {
+        let (tx, rx) = unbounded(); // tạo một channel
+        let a = thread::spawn(move || match rx.recv() {  // nhận tin
+                Ok(msg) => println!("Received: {}", msg),
+                Err(e) => println!("Error: {:?}", e),
+        });
+        tx.send("Hello, World!"); // gửi một tin nhắn
+        a.join().unwrap()
+    }
+    ```
+    - Ví dụ nữa với enum
+
+    ```rust
+    use crossbeam_channel::unbounded;
+    use std::thread;
+
+    fn main() {
+        enum Message {
+            PrintMsg(String),
+            Sum(i32, i32),
+            Quit,
+        }
+        enum MainMsg {
+            RsultSum(i32),
+            MainQuit,
+        }
+        let (tx, rx) = unbounded();
+        let (main_tx, main_rx) = unbounded();
+        let a = thread::spawn(move || loop {
+                match rx.recv() {
+                    Ok(msg) => match msg {
+                        Message::PrintMsg(s) => println!("Received: {}", s),
+                        Message::Sum(a, b) => {
+                            main_tx.send(MainMsg::RsultSum(a + b));
+                        },
+                        Message::Quit => {
+                            main_tx.send(MainMsg::MainQuit);
+                            break;
+                        }
+                    }
+                    Err(e) => {
+                        println!("Error: {:?}", e);
+                        main_tx.try_send(MainMsg::MainQuit); // khi gửi tin nhắn để báo lỗi, nên dùng try_send
+                        break;
+                    }
+                }
+        });
+        tx.send(Message::PrintMsg("Hello, World!".to_owned()));
+        tx.send(Message::Sum(9, 14));
+        tx.send(Message::Quit);
+        while let Ok(msg) = main_rx.recv() {
+            match msg {
+                MainMsg::RsultSum(sum) => println!("Sum: {}", sum),
+                MainMsg::MainQuit => println!("Main quit"),
+            }
+        }
+        a.join()
+    }
+    ```
+
 
 ## Macro:
 - Macro khác với function, macro có thể tạo ra code mới (trong quá trình biên dịch), còn function chỉ có thể thực hiện một hành động
