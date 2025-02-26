@@ -546,6 +546,17 @@ hex = "0.4.3"
 ```rust
 use hex
 ```
+- ### Bonus: top 10 packages hay được sử dụng
+1. **serde** - Chuyển đổi dữ liệu (JSON, YAML, v.v.)
+2. **tokio** - Runtime async cho mạng và xử lý đồng thời
+3. **reqwest** - HTTP client hỗ trợ async
+4. **rayon** - Xử lý song song
+5. **chrono** - Quản lý ngày và giờ
+6. **log + env_logger** - Ghi log
+7. **clap** - Phân tích tham số dòng lệnh
+8. **anyhow** - Xử lý lỗi đơn giản
+9. **thiserror** - Tạo lỗi custom
+10. **dashmap** - HashMap an toàn cho đa luồng
 
 ## Generic Types:
 - Generic types cho phép ta sử dụng cùng một hàm với nhiều loại dữ liệu khác nhau
