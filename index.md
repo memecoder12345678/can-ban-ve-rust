@@ -75,7 +75,7 @@ fn main() {
 }
 ```
 
-## References:
+## Borrowing:
 - Chỉ có thể tham chiếu cho phép sửa đổi cho một dữ liệu trong một phạm vi cụ thể
 - Không thể có một tham chiếu cho phép sửa đổi nếu một tham chiếu bất biến đã tồn tại trong phạm vi
 ```rust
