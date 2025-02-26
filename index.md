@@ -1,8 +1,8 @@
 # Căn bản về rust 🦀
 
 ## Trước khi đọc:
-- Trang web `Căn bản về Rust 🦀` là một tài liệu tóm tắt những kiến thức nền tảng cơ bản về rust (không bao gồm cú pháp)
-- Do đó, nội dung có thể không đầy đủ. Nếu bạn muốn tìm hiểu chi tiết hơn, vui lòng truy cập tài liệu chính thức bằng tiếng Việt tại: [Rust Tiếng Việt](https://rust-tieng-viet.github.io/)
+- Trang web **[Căn bản về Rust 🦀](https://memecoder12345678.github.io/can-ban-ve-rust/)** là một tài liệu tóm tắt những kiến thức nền tảng cơ bản về rust (không bao gồm cú pháp)
+- Do đó, nội dung có thể không đầy đủ. Nếu bạn muốn tìm hiểu chi tiết hơn, vui lòng truy cập tài liệu chính thức bằng tiếng Việt tại: **[Rust Tiếng Việt](https://rust-tieng-viet.github.io/)**
 
 ## Biến:
 - Biến trong rust là bất biến (mặc định)
@@ -546,7 +546,7 @@ hex = "0.4.3"
 ```rust
 use hex
 ```
-- ### Bonus: top 10 packages hay được sử dụng
+- ### Bonus top 10 packages hay được sử dụng:
 1. **serde** - Chuyển đổi dữ liệu (JSON, YAML, v.v.)
 2. **tokio** - Runtime async cho mạng và xử lý đồng thời
 3. **reqwest** - HTTP client hỗ trợ async
